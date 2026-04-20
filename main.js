@@ -44,6 +44,7 @@ class SiteNav extends HTMLElement {
             <a href="#match">매칭 서비스</a>
             <a href="#service">행운번호</a>
             <a href="#insights">인사이트</a>
+            <a href="#comments">사용자 후기</a>
             <a href="#contact">제휴문의</a>
             <theme-toggle></theme-toggle>
           </div>
@@ -77,27 +78,20 @@ class MatchApp extends HTMLElement {
       { name: '박서연', age: 27, location: '서울 마포구', mbti: 'ISFP', tags: ['전시회', '카페투어', '필라테스'], bio: '주말엔 예쁜 카페에서 여유 부리는 걸 좋아해요. 예술적인 감수성이 잘 맞는 분이었으면 좋겠네요. ✨', icon: '📸' }
     ];
   }
-
   connectedCallback() {
-    this.render();
-  }
-
-  render() {
     this.innerHTML = `
       <div style="width: 100%; max-width: 1100px;">
         <h2 class="section-title">당신을 기다리는 행운의 인연</h2>
         <div class="match-container">
-          ${this.users.map((user, idx) => `
+          ${this.users.map(user => `
             <div class="match-card">
               <div class="profile-img-placeholder">${user.icon}</div>
               <div class="profile-content">
                 <div class="profile-name">${user.name} <span style="font-size: 1.1rem; opacity: 0.5; font-weight: 500;">${user.age}</span></div>
                 <div class="profile-info">${user.location} • ${user.mbti}</div>
-                <div class="tag-container">
-                  ${user.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
-                </div>
+                <div class="tag-container">${user.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}</div>
                 <p class="profile-bio">${user.bio}</p>
-                <button class="match-btn" onclick="alert('${user.name}님에게 관심 표현을 보냈습니다! 상대방이 수락하면 채팅이 시작됩니다.')">관심 있음</button>
+                <button class="match-btn" onclick="alert('${user.name}님에게 관심 표현을 보냈습니다!')">관심 있음</button>
               </div>
             </div>
           `).join('')}
@@ -110,7 +104,7 @@ class MatchApp extends HTMLElement {
 class LottoMachine extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <div class="card card-wide">
+      <div class="card" style="max-width: 800px; margin: 0 auto;">
         <h2 style="font-size: 2rem; margin-bottom: 2rem; font-weight: 800;">오늘의 행운번호 추첨</h2>
         <div class="ball-container" id="ball-container"></div>
         <button class="generate-btn" id="generate-btn" style="width: auto; min-width: 200px;">번호 생성하기</button>
@@ -118,7 +112,6 @@ class LottoMachine extends HTMLElement {
     `;
     this.querySelector('#generate-btn').addEventListener('click', () => this.generateNumbers());
   }
-
   async generateNumbers() {
     const btn = this.querySelector('#generate-btn');
     const container = this.querySelector('#ball-container');
@@ -136,7 +129,6 @@ class LottoMachine extends HTMLElement {
     }
     btn.disabled = false; btn.textContent = '다시 생성';
   }
-
   getBallClass(n) {
     if (n <= 10) return 'n1'; if (n <= 20) return 'n11'; if (n <= 30) return 'n21'; if (n <= 40) return 'n31'; return 'n41';
   }
@@ -157,10 +149,10 @@ class InsightSection extends HTMLElement {
         <h2 class="section-title">LUCKY IT 인사이트</h2>
         <div class="blog-grid">
           ${this.posts.map(p => `
-            <div class="card blog-card" style="text-align: left; padding: 2rem;">
+            <div class="card" style="text-align: left; padding: 2rem;">
               <span class="blog-category" style="display: inline-block; padding: 0.3rem 0.8rem; background: rgba(var(--primary-color), 0.1); color: var(--primary-color); border-radius: 2rem; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;">${p.category}</span>
               <h3 style="font-size: 1.3rem; margin-bottom: 1rem; line-height: 1.4;">${p.title}</h3>
-              <p style="font-size: 0.95rem; opacity: 0.7; margin-bottom: 1.5rem; flex-grow: 1;">${p.excerpt}</p>
+              <p style="font-size: 0.95rem; opacity: 0.7; margin-bottom: 1.5rem;">${p.excerpt}</p>
               <span style="font-size: 0.85rem; opacity: 0.5;">${p.date}</span>
             </div>
           `).join('')}
@@ -170,15 +162,67 @@ class InsightSection extends HTMLElement {
   }
 }
 
+class CommentSection extends HTMLElement {
+  constructor() {
+    super();
+    this.comments = JSON.parse(localStorage.getItem('luck_comments')) || [
+      { name: '행운가득', text: '여기서 뽑은 번호로 4등 당첨됐어요! 대박 기운 받아갑니다.', date: '2026.04.19' },
+      { name: '매칭기다림', text: '프로필 레이아웃이 너무 깔끔하고 좋네요. 좋은 인연 만났으면 좋겠습니다.', date: '2026.04.20' }
+    ];
+  }
+  connectedCallback() {
+    this.render();
+  }
+  render() {
+    this.innerHTML = `
+      <div class="comment-container">
+        <h2 class="section-title">사용자 후기 및 댓글</h2>
+        <div class="card" style="margin-bottom: 3rem; text-align: left;">
+          <form id="comment-form">
+            <div class="input-group"><label>닉네임</label><input type="text" id="c-name" placeholder="닉네임을 입력하세요" required></div>
+            <div class="input-group"><label>댓글 내용</label><textarea id="c-text" placeholder="따뜻한 댓글을 남겨주세요" required style="min-height: 100px;"></textarea></div>
+            <button type="submit" class="submit-btn" style="width: auto; min-width: 150px;">댓글 등록</button>
+          </form>
+        </div>
+        <div class="comment-list" id="comment-list">
+          ${this.comments.map(c => this.createCommentHTML(c)).join('')}
+        </div>
+      </div>
+    `;
+    this.querySelector('#comment-form').addEventListener('submit', (e) => this.addComment(e));
+  }
+  createCommentHTML(c) {
+    return `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.name.charAt(0)}</div>
+        <div class="comment-content">
+          <div class="comment-header"><span class="comment-author">${c.name}</span><span class="comment-date">${c.date}</span></div>
+          <p class="comment-text">${c.text}</p>
+        </div>
+      </div>
+    `;
+  }
+  addComment(e) {
+    e.preventDefault();
+    const name = this.querySelector('#c-name').value;
+    const text = this.querySelector('#c-text').value;
+    const date = new Date().toLocaleDateString('ko-KR').slice(0, -1);
+    const newComment = { name, text, date };
+    this.comments.unshift(newComment);
+    localStorage.setItem('luck_comments', JSON.stringify(this.comments));
+    this.render();
+  }
+}
+
 class ContactForm extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <div class="card card-wide">
+      <div class="card" style="max-width: 800px; margin: 0 auto;">
         <h2 style="font-size: 2rem; margin-bottom: 2rem; font-weight: 800;">제휴 및 서비스 문의</h2>
         <form action="https://formspree.io/f/mwvaqjrr" method="POST">
-          <div class="input-group"><label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">성함</label><input type="text" name="name" placeholder="홍길동" required></div>
-          <div class="input-group"><label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">이메일</label><input type="email" name="_replyto" placeholder="email@example.com" required></div>
-          <div class="input-group"><label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">문의내용</label><textarea name="message" placeholder="문의 내용을 상세히 입력해주세요." required style="min-height: 150px;"></textarea></div>
+          <div class="input-group"><label>성함</label><input type="text" name="name" placeholder="홍길동" required></div>
+          <div class="input-group"><label>이메일</label><input type="email" name="_replyto" placeholder="email@example.com" required></div>
+          <div class="input-group"><label>문의내용</label><textarea name="message" placeholder="문의 내용을 상세히 입력해주세요." required style="min-height: 150px;"></textarea></div>
           <button type="submit" class="generate-btn">제휴 문의 보내기</button>
         </form>
       </div>
@@ -193,10 +237,7 @@ class SiteFooter extends HTMLElement {
         <div class="footer-container">
           <span class="footer-logo">LUCKY IT & MATCH</span>
           <div class="footer-links">
-            <a href="#match">매칭 서비스</a>
-            <a href="#service">행운번호</a>
-            <a href="#insights">인사이트</a>
-            <a href="#contact">제휴문의</a>
+            <a href="#match">매칭 서비스</a><a href="#service">행운번호</a><a href="#insights">인사이트</a><a href="#comments">사용자 후기</a><a href="#contact">제휴문의</a>
           </div>
           <p class="copyright">&copy; 2026 LUCKY IT & MATCH. All rights reserved.</p>
         </div>
@@ -211,5 +252,6 @@ customElements.define('site-hero', SiteHero);
 customElements.define('match-app', MatchApp);
 customElements.define('lotto-machine', LottoMachine);
 customElements.define('insight-section', InsightSection);
+customElements.define('comment-section', CommentSection);
 customElements.define('contact-form', ContactForm);
 customElements.define('site-footer', SiteFooter);
