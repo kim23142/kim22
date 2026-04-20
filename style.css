@@ -3,6 +3,7 @@
   --text-color: oklch(20% 0.02 250);
   --primary-color: oklch(60% 0.15 250);
   --surface-color: oklch(100% 0 0);
+  --input-bg: oklch(96% 0.01 250);
   --shadow-color: rgba(0, 0, 0, 0.1);
   --transition-speed: 0.3s;
   
@@ -19,6 +20,7 @@
   --text-color: oklch(95% 0.01 250);
   --primary-color: oklch(75% 0.1 250);
   --surface-color: oklch(20% 0.02 250);
+  --input-bg: oklch(25% 0.02 250);
   --shadow-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -30,7 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 4rem 1rem;
   min-height: 100vh;
   transition: background-color var(--transition-speed), color var(--transition-speed);
 }
@@ -39,6 +41,7 @@ header {
   position: fixed;
   top: 1rem;
   right: 1rem;
+  z-index: 100;
 }
 
 .card {
@@ -49,13 +52,21 @@ header {
   text-align: center;
   transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
   max-width: 500px;
-  width: 90%;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 h1 {
+  margin-top: 0;
   margin-bottom: 2rem;
   font-weight: 800;
   letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
 .ball-container {
@@ -96,31 +107,64 @@ h1 {
 .ball.n31 { background-color: var(--ball-gray); }
 .ball.n41 { background-color: var(--ball-green); }
 
-.generate-btn {
+.generate-btn, .submit-btn {
   background: var(--primary-color);
   color: white;
   border: none;
   padding: 1rem 2rem;
   border-radius: 1rem;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 10px 20px -5px var(--primary-color);
+  width: 100%;
 }
 
-.generate-btn:hover {
+.generate-btn:hover, .submit-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 15px 25px -5px var(--primary-color);
   filter: brightness(1.1);
 }
 
-.generate-btn:active {
+.generate-btn:active, .submit-btn:active {
   transform: translateY(0);
 }
 
-.generate-btn:disabled {
-  filter: grayscale(1);
-  cursor: not-allowed;
-  opacity: 0.7;
+.form-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: var(--surface-color);
+  box-shadow: 0 0 0 4px rgba(var(--primary-color), 0.1);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
 }

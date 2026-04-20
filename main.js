@@ -129,5 +129,32 @@ class LottoMachine extends HTMLElement {
   }
 }
 
+class ContactForm extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="card">
+        <h2>제휴 및 서비스 문의</h2>
+        <form action="https://formspree.io/f/mwvaqjrr" method="POST">
+          <div class="form-group">
+            <label for="name">성함</label>
+            <input type="text" id="name" name="name" placeholder="홍길동" required>
+          </div>
+          <div class="form-group">
+            <label for="email">이메일 주소</label>
+            <input type="email" id="email" name="_replyto" placeholder="example@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label for="message">문의 내용</label>
+            <textarea id="message" name="message" placeholder="제휴 관련 문의 내용을 입력해주세요." required></textarea>
+          </div>
+          <input type="hidden" name="_subject" value="새로운 제휴 문의가 접수되었습니다.">
+          <button type="submit" class="submit-btn">문의 전송하기</button>
+        </form>
+      </div>
+    `;
+  }
+}
+
 customElements.define('theme-toggle', ThemeToggle);
 customElements.define('lotto-machine', LottoMachine);
+customElements.define('contact-form', ContactForm);
