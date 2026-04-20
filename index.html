@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
+  <title>Theme Switcher Demo</title>
   <link href='/style.css' rel='stylesheet'>
+  <script defer src="/main.js"></script>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+  <theme-toggle></theme-toggle>
+  
+  <div class="card">
+    <h1>Modern Theme Switcher</h1>
+    <p>This application supports both Light and Dark modes using CSS variables and Web Components.</p>
+    <button onclick="alert('Hello from the theme switcher!');">Explore More</button>
+  </div>
 </body>
 </html>
