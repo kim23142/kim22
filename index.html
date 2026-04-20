@@ -1,19 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Theme Switcher Demo</title>
+  <title>행운의 로또 번호 생성기</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link href='/style.css' rel='stylesheet'>
   <script defer src="/main.js"></script>
 </head>
 <body>
-  <theme-toggle></theme-toggle>
+  <header>
+    <theme-toggle></theme-toggle>
+  </header>
   
-  <div class="card">
-    <h1>Modern Theme Switcher</h1>
-    <p>This application supports both Light and Dark modes using CSS variables and Web Components.</p>
-    <button onclick="alert('Hello from the theme switcher!');">Explore More</button>
-  </div>
+  <main>
+    <lotto-machine></lotto-machine>
+  </main>
 </body>
 </html>

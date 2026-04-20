@@ -5,6 +5,13 @@
   --surface-color: oklch(100% 0 0);
   --shadow-color: rgba(0, 0, 0, 0.1);
   --transition-speed: 0.3s;
+  
+  /* Lotto Ball Colors */
+  --ball-yellow: #fbc400;
+  --ball-blue: #69c8f2;
+  --ball-red: #ff7272;
+  --ball-gray: #aaaaaa;
+  --ball-green: #b0d840;
 }
 
 [data-theme="dark"] {
@@ -18,7 +25,7 @@
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -28,27 +35,92 @@ body {
   transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-.card {
-  background: var(--surface-color);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px var(--shadow-color);
-  text-align: center;
-  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+header {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
 }
 
-button {
+.card {
+  background: var(--surface-color);
+  padding: 3rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 50px var(--shadow-color);
+  text-align: center;
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+  max-width: 500px;
+  width: 90%;
+}
+
+h1 {
+  margin-bottom: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.ball-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2.5rem;
+  min-height: 60px;
+}
+
+.ball {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: inset -4px -4px 8px rgba(0,0,0,0.2), 0 4px 10px var(--shadow-color);
+  animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: scale(0.5) translateY(20px);
+}
+
+@keyframes pop-in {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.ball.n1 { background-color: var(--ball-yellow); }
+.ball.n11 { background-color: var(--ball-blue); }
+.ball.n21 { background-color: var(--ball-red); }
+.ball.n31 { background-color: var(--ball-gray); }
+.ball.n41 { background-color: var(--ball-green); }
+
+.generate-btn {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
   cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
-  transition: transform 0.2s;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 20px -5px var(--primary-color);
 }
 
-button:active {
-  transform: scale(0.95);
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px -5px var(--primary-color);
+  filter: brightness(1.1);
+}
+
+.generate-btn:active {
+  transform: translateY(0);
+}
+
+.generate-btn:disabled {
+  filter: grayscale(1);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
